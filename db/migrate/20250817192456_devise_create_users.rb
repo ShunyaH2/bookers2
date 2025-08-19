@@ -6,7 +6,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.1]
       ##課題指示_STEP1
       t.string :name
       t.string :introduction
-      t.integer :user_id
 
       ## Database authenticatable
       t.string :email,              null: false, default: ""
