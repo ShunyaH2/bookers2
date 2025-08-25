@@ -1,2 +1,29 @@
-<h1>Book detail</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<h2>Book detail</h2>
+
+<div class="book-detail">
+  <div class="media">
+    <%= link_to user_path(@book.user) do %>
+      <%= image_tag @book.user.get_profile_image(120, 120), size: "120x120", alt: @book.user.name %>
+    <% end %>
+    <div class="media-body" style="margin-left: 16px;">
+      <div>
+        <%= link_to @book.title, book_path(@book) %>
+      </div>
+      <div>
+        <%= simple_format(@book.body) %>
+      </div>
+      <div>
+        <%= link_to @book.user.name, user_path(@book.user) %>
+      </div>
+    </div>
+  </div>
+
+  <%# 自分の投稿だけ編集/削除ボタンを表示 %>
+  <% if user_signed_in? && current_user == @book.user %>
+  <%= link_to "Edit", edit_book_path(@book), class: "btn btn-success btn-sm" %>
+  <%= link_to "Destroy", book_path(@book),
+              method: :delete,
+              data: { confirm: "Are you sure?" },
+              class: "btn btn-danger btn-sm" %>
+  <% end %>
+</div>

@@ -28,17 +28,33 @@
       <% end %>
     </header>
 
-    <main style="display:flex;">
-      <% if user_signed_in? && controller_name != "homes" %>
-        <aside style="width: 250px; padding: 10px; background: #f7f7f7;">
+    <% flash.each do |key, message| %>
+      <div class="alert alert-<%= key == "notice" ? "success" : "danger" %>">
+        <%= message %>
+      </div>
+    <% end %>
+    
+    <div class="container-fluid">
+      <div class="row">
+        <%# 左サイドバー: ログイン済み かつ トップ(=homes#top)以外で表示 %>
+        <% if user_signed_in? &&
+      !(controller_name == "homes" && action_name == "top") &&
+      !(controller_name == "users" && action_name == "edit") &&
+      !(controller_name == "books" && action_name == "edit") %>
+          <aside class="col-md-3 col-lg-3 mb-4">
+          <%= render "users/info", user: current_user %>
           <%= render "books/form", book: @book %>
-        </aside>
-      <% end %>
-
-      <section style="flex:1; padding: 10px;">
-        <%= yield %>
-      </section>
-    </main>
+          </aside>
+          <main class="col-md-9 col-lg-9">
+            <%= yield %>
+          </main>
+        <% else %>
+          <main class="col-12">
+            <%= yield %>
+          </main>
+        <% end %>
+      </div>
+    </div>
 
     <footer>
       <p>CopyRight infratop.inc</p>

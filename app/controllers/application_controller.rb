@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   end
   
   def after_sign_in_path_for(resource)
-    books_path
+    my_books_books_path
   end
 
   def after_sign_out_path_for(resource)
@@ -20,7 +20,6 @@ class ApplicationController < ActionController::Base
 
   private
   def prepare_sidebar_book
-    return if controller_name == "homes"
     @book ||= Book.new
   end
 

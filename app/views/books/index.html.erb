@@ -1,3 +1,27 @@
-<h1>books一覧</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<!-- app/views/books/index.html.erb -->
+<h2>Books</h2>
 
+<table class="table">
+  <thead>
+    <tr>
+      <th>image</th>
+      <th>Title</th>
+      <th>Opinion</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @books.each do |book| %>
+      <tr>
+        <td>
+          <%= link_to user_path(book.user) do %>
+            <%= image_tag book.user.get_profile_image(60, 60), size: "60x60", alt: book.user.name %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to book.title, book_path(book) %><br>
+        </td>
+        <td><%= simple_format(book.body) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
