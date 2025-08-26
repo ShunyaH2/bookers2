@@ -29,8 +29,20 @@
     </header>
 
     <% flash.each do |key, message| %>
+      <% next if key.to_s == "errors" %>  <!-- ★errors はここで出さない -->
       <div class="alert alert-<%= key == "notice" ? "success" : "danger" %>">
         <%= message %>
+      </div>
+    <% end %>
+    
+    <%# ★ 詳細エラーはここだけで表示（1か所だけ） %>
+    <% if (errs = (flash.now[:errors] || flash[:errors])).present? %>
+      <% errs = Array(errs) %>
+      <div class="alert alert-danger">
+        <h4><%= pluralize(errs.size, "error") %> prohibited this action:</h4>
+        <ul class="mb-0">
+          <% errs.each do |msg| %><li><%= msg %></li><% end %>
+        </ul>
       </div>
     <% end %>
     
@@ -38,21 +50,17 @@
       <div class="row">
         <%# 左サイドバー: ログイン済み かつ トップ(=homes#top)以外で表示 %>
         <% if user_signed_in? &&
-      !(controller_name == "homes" && action_name == "top") &&
-      !(controller_name == "users" && action_name == "edit") &&
-      !(controller_name == "books" && action_name == "edit") %>
-          <aside class="col-md-3 col-lg-3 mb-4">
-          <%= render "users/info", user: current_user %>
-          <%= render "books/form", book: @book %>
-          </aside>
-          <main class="col-md-9 col-lg-9">
-            <%= yield %>
-          </main>
-        <% else %>
-          <main class="col-12">
-            <%= yield %>
-          </main>
-        <% end %>
+      !(controller_name == "homes"  && action_name == "top") &&
+      !(controller_name == "users"  && %w(edit update).include?(action_name)) &&
+      !(controller_name == "books"  && %w(edit update).include?(action_name)) %>
+  <aside class="col-md-3 col-lg-3 mb-4">
+    <%= render "users/info", user: current_user %>
+    <%= render "books/form", book: @book %>
+  </aside>
+  <main class="col-md-9 col-lg-9"><%= yield %></main>
+<% else %>
+  <main class="col-12"><%= yield %></main>
+<% end %>
       </div>
     </div>
 

@@ -17,7 +17,6 @@ class BooksController < ApplicationController
     if @book.update(book_params)
       redirect_to @book, notice: "You have updated book successfully."
     else
-      flash.now[:alert] = "Failed to update book."
       render :edit, status: :unprocessable_entity
     end
   end
@@ -34,7 +33,7 @@ class BooksController < ApplicationController
     else
       # 失敗時は index を再表示できるように一覧を用意
       @books = Book.includes(user: { profile_image_attachment: :blob }).order(created_at: :desc)
-      flash.now[:alert] = "Failed to create book."
+      flash.now[:errors] = @book.errors.full_messages
       render :index, status: :unprocessable_entity
     end
   end
@@ -49,6 +48,10 @@ class BooksController < ApplicationController
   private
   def set_new_book; @book = Book.new; end
   def set_book;     @book = Book.find(params[:id]); end
-  def set_own_book; @book = current_user.books.find(params[:id]); end
+  def set_own_book
+    @book = current_user.books.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to books_path, alert: "権限がありません。"
+  end
   def book_params;  params.require(:book).permit(:title, :body); end
 end

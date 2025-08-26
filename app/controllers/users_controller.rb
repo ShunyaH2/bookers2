@@ -21,8 +21,7 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to @user, notice: "You have updated user successfully."
     else
-      flash.now[:alert] = "更新に失敗しました。"
-      render :edit, status: :unprocessable_entity
+     render :edit, status: :unprocessable_entity
     end
   end
 
