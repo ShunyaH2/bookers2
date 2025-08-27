@@ -14,22 +14,22 @@
   <body>
     <header>
       <% if user_signed_in? %>
-        <li><%= link_to "Bookers", root_path %></li>
-        <li><%= link_to "Home", my_books_books_path %></li>
-        <li><%= link_to "Users", users_path %></li>
-        <li><%= link_to "Books", books_path %></li>
-        <li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
+        <li><%= link_to root_path do %><i class="fas fa-book"></i> Bookers<% end %></li>
+        <li><%= link_to user_path(current_user) do %><i class="fas fa-home"></i> Home<% end %></li>
+        <li><%= link_to users_path do %><i class="fas fa-users"></i> Users<% end %></li>
+        <li><%= link_to books_path do %><i class="fas fa-book-open"></i> Books<% end %></li>
+        <li><%= link_to destroy_user_session_path, method: :delete do %><i class="fas fa-sign-out-alt"></i> Log out<% end %></li>
       <% else %>
-        <li><%= link_to "Bookers", root_path %></li>
-        <li><%= link_to "Home", root_path %></li>
-        <li><%= link_to "About", about_path %></li>
-        <li><%= link_to "Sign up", new_user_registration_path %></li>
-        <li><%= link_to "Log in", new_user_session_path %></li>
+        <li><%= link_to root_path do %><i class="fas fa-book"></i> Bookers<% end %></li>
+        <li><%= link_to root_path do %><i class="fas fa-home"></i> Home<% end %></li>
+        <li><%= link_to '/home/about' do %><i class="fas fa-link"></i> About<% end %></li>
+        <li><%= link_to new_user_registration_path do %><i class="fas fa-user-plus"></i> Sign up<% end %></li>
+        <li><%= link_to new_user_session_path do %><i class="fas fa-sign-in-alt"></i> Log in<% end %></li>
       <% end %>
     </header>
 
     <% flash.each do |key, message| %>
-      <% next if key.to_s == "errors" %>  <!-- ★errors はここで出さない -->
+      <% next if key.to_s == "errors" %>  
       <div class="alert alert-<%= key == "notice" ? "success" : "danger" %>">
         <%= message %>
       </div>
@@ -45,24 +45,14 @@
         </ul>
       </div>
     <% end %>
-    
-    <div class="container-fluid">
-      <div class="row">
-        <%# 左サイドバー: ログイン済み かつ トップ(=homes#top)以外で表示 %>
-        <% if user_signed_in? &&
-      !(controller_name == "homes"  && action_name == "top") &&
-      !(controller_name == "users"  && %w(edit update).include?(action_name)) &&
-      !(controller_name == "books"  && %w(edit update).include?(action_name)) %>
-  <aside class="col-md-3 col-lg-3 mb-4">
-    <%= render "users/info", user: current_user %>
-    <%= render "books/form", book: @book %>
-  </aside>
-  <main class="col-md-9 col-lg-9"><%= yield %></main>
-<% else %>
-  <main class="col-12"><%= yield %></main>
-<% end %>
+
+    <main>
+      <div class="container">
+        <div class ="row">            
+          <%= yield %>
+        </div>
       </div>
-    </div>
+    </main>
 
     <footer>
       <p>CopyRight infratop.inc</p>

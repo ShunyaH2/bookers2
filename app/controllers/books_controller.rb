@@ -1,16 +1,23 @@
 class BooksController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_user!
   before_action :set_new_book, only: [:index, :my_books, :show]
   before_action :set_book,     only: [:show]
   before_action :set_own_book, only: [:edit, :update, :destroy]
+  
 
   def index
     @books = Book
       .includes(user: { profile_image_attachment: :blob })
       .order(created_at: :desc)
+    @user = current_user
+    @new_book = Book.new
   end
-
-  def show; end
+    
+  def show; 
+    @user = @book.user
+    @new_book = Book.new
+  end
+  
   def edit; end
 
   def update
@@ -27,13 +34,13 @@ class BooksController < ApplicationController
   end
   
   def create
-    @book = current_user.books.build(book_params)
-    if @book.save
-      redirect_to @book, notice: "You have created book successfully."
+    @new_book = current_user.books.build(book_params)
+    if @new_book.save
+      redirect_to @new_book, notice: "You have created book successfully."
     else
-      # 失敗時は index を再表示できるように一覧を用意
       @books = Book.includes(user: { profile_image_attachment: :blob }).order(created_at: :desc)
-      flash.now[:errors] = @book.errors.full_messages
+      @user =current_user
+      flash.now[:errors] = @new_book.errors.full_messages
       render :index, status: :unprocessable_entity
     end
   end
@@ -46,7 +53,7 @@ class BooksController < ApplicationController
   end
 
   private
-  def set_new_book; @book = Book.new; end
+  def set_new_book; @new_book = Book.new; end
   def set_book;     @book = Book.find(params[:id]); end
   def set_own_book
     @book = current_user.books.find(params[:id])

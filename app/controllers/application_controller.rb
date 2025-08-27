@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :prepare_sidebar_book, if: :user_signed_in?
-  before_action :authenticate_user!, except: [:top]
 
   protected
 
@@ -12,7 +11,11 @@ class ApplicationController < ActionController::Base
   end
   
   def after_sign_in_path_for(resource)
-    my_books_books_path
+    user_path(resource)
+  end
+
+  def after_sign_up_path_for(resource)
+    user_path(resource)
   end
 
   def after_sign_out_path_for(resource)
@@ -21,7 +24,8 @@ class ApplicationController < ActionController::Base
 
   private
   def prepare_sidebar_book
-    @book ||= Book.new
+    return if controller_name == "homes" || %w(edit update).include?(action_name)
+    @new_book = Book.new
   end
 
 end

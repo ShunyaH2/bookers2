@@ -4,7 +4,6 @@ class UsersController < ApplicationController
   before_action :ensure_current_user!, only: [:edit, :update]
   
   def show
-    @user  = User.find(params[:id])
     @books = @user.books
                   .includes(user: { profile_image_attachment: :blob })
                   .order(created_at: :desc)
@@ -14,7 +13,9 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.includes(profile_image_attachment: :blob).order(:id)
+    @users = User.all
+    @user = current_user
+    @new_book = Book.new
   end
 
   def update
@@ -31,7 +32,10 @@ class UsersController < ApplicationController
   end
 
   def ensure_current_user!
-    redirect_to @user, alert: "権限がありません。" unless @user == current_user
+    user = User.find(params[:id])
+    unless @user == current_user
+      redirect_to user_path(current_user), alert: "権限がありません。"
+    end
   end
 
   def user_params

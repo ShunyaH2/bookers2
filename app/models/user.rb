@@ -7,8 +7,9 @@ class User < ApplicationRecord
 
   before_validation { self.name = name.to_s.strip }
 
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
-  validates :email, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: true,
+                   length: { minimum: 2, maximum: 20 }
+  validates :introduction, length: { maximum: 50 }, allow_blank: true
 
   has_many :books, dependent: :destroy
   has_many :post_images, dependent: :destroy
