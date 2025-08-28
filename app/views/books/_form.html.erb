@@ -2,13 +2,14 @@
 
 <h3>New book</h3>
 <%= form_with model: book, url: books_path do |f| %>
-  <div>
+  <div class="form-group">
     <%= f.label :title, "Title" %>
-    <%= f.text_field :title %>
+    <%= f.text_field :title, class: "form-control" %>
   </div>
   <div>
     <%= f.label :body, "Opinion" %>
-    <%= f.text_area :body %>
+    <%= f.text_area :body, class: "form-control" %>
   </div>
-  <%= f.submit "Create Book" %>
+
+  <%= f.submit "Create Book", class: "btn btn-success mt-3" %>
 <% end %>

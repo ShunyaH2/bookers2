@@ -1,7 +1,32 @@
-<h1><i class="fas fa-book"></i> Bookers</h1>
-<div class="text-center my-4">
-  <h1>Welcome to Bookers!</h1>
-  <p class="mb-3">Please log in or sign up to continue.</p>
-  <%= link_to "Log in", new_user_session_path, class: "btn btn-primary mr-2" %>
-  <%= link_to "Sign up", new_user_registration_path, class: "btn btn-success ml-2" %>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <!-- 見出しは左寄せ -->
+      <h1 class="display-4 font-weight-bold mb-3">
+        welcome to <i class="fas fa-book"></i><strong>Bookers</strong> !!
+      </h1>
+
+      <!-- 段落だけ左寄せ（Bootstrap4 は text-left） -->
+      <p class="mb-1 text-left">
+        In <i class="fas fa-book"></i><strong>Bookers</strong>,
+      </p>
+      <p class="mb-4 text-left">
+        you can share and exchange your opinions , impressions , and emotions<br>
+        about various books!
+      </p>
+
+      <!-- ボタンは中央寄せ -->
+      <div class="text-center">
+        <%= link_to "Log in",
+                    new_user_session_path,
+                    class: "btn btn-info btn-lg btn-block mx-auto mb-3",
+                    style: "max-width: 480px;" %>
+
+        <%= link_to "Sign up",
+                    new_user_registration_path,
+                    class: "btn btn-success btn-lg btn-block mx-auto",
+                    style: "max-width: 480px;" %>
+      </div>
+    </div>
+  </div>
 </div>

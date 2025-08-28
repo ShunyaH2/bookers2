@@ -12,20 +12,62 @@
   </head>
 
   <body>
-    <header>
-      <% if user_signed_in? %>
-        <li><%= link_to root_path do %><i class="fas fa-book"></i> Bookers<% end %></li>
-        <li><%= link_to user_path(current_user) do %><i class="fas fa-home"></i> Home<% end %></li>
-        <li><%= link_to users_path do %><i class="fas fa-users"></i> Users<% end %></li>
-        <li><%= link_to books_path do %><i class="fas fa-book-open"></i> Books<% end %></li>
-        <li><%= link_to destroy_user_session_path, method: :delete do %><i class="fas fa-sign-out-alt"></i> Log out<% end %></li>
-      <% else %>
-        <li><%= link_to root_path do %><i class="fas fa-book"></i> Bookers<% end %></li>
-        <li><%= link_to root_path do %><i class="fas fa-home"></i> Home<% end %></li>
-        <li><%= link_to '/home/about' do %><i class="fas fa-link"></i> About<% end %></li>
-        <li><%= link_to new_user_registration_path do %><i class="fas fa-user-plus"></i> Sign up<% end %></li>
-        <li><%= link_to new_user_session_path do %><i class="fas fa-sign-in-alt"></i> Log in<% end %></li>
-      <% end %>
+    <header class="mb-3">
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+          <!-- 左：ブランド -->
+          <%= link_to root_path, class: "navbar-brand d-flex align-items-center" do %>
+            <span>Bookers</span>
+          <% end %>
+
+          <!-- 右：リンク群 -->
+          <ul class="navbar-nav ml-auto">
+            <% if user_signed_in? %>
+              <li class="nav-item">
+                <%= link_to user_path(current_user), class: "nav-link" do %>
+                  <i class="fas fa-home"></i> Home
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to users_path, class: "nav-link" do %>
+                  <i class="fas fa-users"></i> Users
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to books_path, class: "nav-link" do %>
+                  <i class="fas fa-book-open"></i> Books
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to destroy_user_session_path, method: :delete, class: "nav-link" do %>
+                  <i class="fas fa-sign-out-alt"></i> Log out
+                <% end %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to root_path, class: "nav-link" do %>
+                  <i class="fas fa-home"></i> Home
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to about_path, class: "nav-link" do %>
+                  <i class="fas fa-link"></i> About
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to new_user_registration_path, class: "nav-link" do %>
+                  <i class="fas fa-user-plus"></i> Sign up
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to new_user_session_path, class: "nav-link" do %>
+                  <i class="fas fa-sign-in-alt"></i> Log in
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </nav>
     </header>
 
     <% flash.each do |key, message| %>
@@ -54,7 +96,7 @@
       </div>
     </main>
 
-    <footer>
+    <footer class="text-center mt-5">
       <p>CopyRight infratop.inc</p>
     </footer>
   </body>
